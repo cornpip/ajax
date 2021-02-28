@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>json 받자</title>
+  </head>
+  <body>
+    <div id="root">
+      데이터가 붙을 곳입니다.
+    </div>
+ 
+    <button onclick="getData()">json 통신하기</button>
+    <h1>새로고침 확인 텍스트 넣기 : </h1>
+    <h2 id="test">12312312321</h2>
+ 
+    <script type="text/javascript">
+      const attach = document.getElementById('root');
+ 
+      let getData = function(){
+          let httpRequest;
+          if(window.XMLHttpRequest){ //Chrome, Safari..
+            httpRequest = new XMLHttpRequest();
+          }
+          
+          //여기서 찍는 console은 클라이언트단의 console로 서버 log에는 안찍히고
+          //브라우저 콘솔에는 찍힌다.
+          httpRequest.onreadystatechange = function(){
+            if(httpRequest.readyState === 4){
+              /* 서버에 대한 요청 응답 처리 상태 : readyState */
+              if(httpRequest.status === 200){
+                /* 서버 응답 코드 : status */
+                let b = httpRequest.responseText;
+                console.log('3333',b);
+                let a = httpRequest.response;
+                //  let c = JSON.parse(b);
+                console.log(a);
+                // console.log(c);
+                // attach.innerHTML = c.name;
+                console.log('tttt');
+              }
+            }
+          }
+          console.log('1')
+          httpRequest.open('GET', '/dataGet', true);
+          httpRequest.send();
+      }
+    </script>
+  </body>
+</html>
