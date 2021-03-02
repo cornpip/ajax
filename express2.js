@@ -17,8 +17,19 @@ app.get('/', function(req, res){
 });
  
 app.get('/dataGet', function(req, res){
+  var body=req.body
+  console.log(body);
   console.log('요청을 받았다!');
   res.status(200).json({name: "jinbro"});
+});
+
+app.post('/dataget2', function(req, res){
+  var body=req.body
+  console.log(body);
+  console.log('요청을 받았다!');
+  var responseData = {'result' : 'ok', 'email' : body.email};
+  //res.status(200).json(body.id);
+  res.status(200).json(responseData);
 });
  
 /* server run call back */

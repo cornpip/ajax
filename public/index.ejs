@@ -12,11 +12,15 @@
     <button onclick="getData()">json 통신하기</button>
     <h1>새로고침 확인 텍스트 넣기 : </h1>
     <h2 id="test">12312312321</h2>
+
+    <form class="frm">
+      <input type="text" name='test1'>
+      <input type="button" method="POST" value="제출" id='btn'>
+    </form>
  
     <script type="text/javascript">
+    let getData =function(){
       const attach = document.getElementById('root');
- 
-      let getData = function(){
           let httpRequest;
           if(window.XMLHttpRequest){ //Chrome, Safari..
             httpRequest = new XMLHttpRequest();
@@ -32,18 +36,85 @@
                 let b = httpRequest.responseText;
                 console.log('3333',b);
                 let a = httpRequest.response;
-                //  let c = JSON.parse(b);
+                let c = JSON.parse(b);
                 console.log(a);
                 // console.log(c);
-                // attach.innerHTML = c.name;
-                console.log('tttt');
+                attach.innerHTML = c.name;
+                console.log('ee');
               }
             }
           }
+          a='hello'
           console.log('1')
           httpRequest.open('GET', '/dataGet', true);
+          // httpRequest.setRequestHeader() send에 정보를 담아 보내는 것이 아니므로
+          // 요청에 딸려 보내는 data의 content-type을 정할 필요가 없었다.
           httpRequest.send();
+        }
+    </script>
+    <script>
+      document.getElementById('btn').addEventListener('click', function(){
+        var inputdata = document.forms[0].elements[0].value;
+        
+        sendAjax(inputdata);
+      })
+    </script>
+    <script>
+      function sendAjax(data){
+
+        // content-type을 설정하고 데이터  송신
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/dataget2', true);
+        //xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        //xhr.send("id="+data);
+        // form encoded 방식으로 한다면 key=value 의 형식이다
+
+        var data = {'email' : data};
+        data = JSON.stringify(data);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(data);
+        
+        //--------------------------------------------------------
+        // json으로 send했다면 json.parse후 접근하면된다
+        // httpRequest.onreadystatechange = function(){
+        //     if(httpRequest.readyState === 4){
+        //       /* 서버에 대한 요청 응답 처리 상태 : readyState */
+        //       if(httpRequest.status === 200){
+        //         /* 서버 응답 코드 : status */
+        //         var result = JSON.parse(xhr.responseText);
+        //         document.getElementById("test").innerHTML = result.email
+        //       }
+        //     }
+        //   }
+
+ 
+
+         // 데이터 수신이 완료되면 표시
+         xhr.addEventListener('load', function(){
+        
+         var result = JSON.parse(xhr.responseText);
+            console.log(result);
+
+            if(result.email == '') return;
+      
+            document.getElementById("test").innerHTML = result.email;
+         })
+
+        // xhr.onreadystatechange = function(){
+        // if(xhr.readyState==4 && xhr.status==200){
+        //   var str = xhr.responseText;
+        //   str = str.replace(/"/g,"");
+        //     document.getElementById("test").innerHTML = str;
+        //   }
+        // }
       }
+      // ajax 통신
+      // 클라이언트단에서
+      // 이벤트리스너에 대한 script
+      // xmlhttprequest 을 이용한 데이터를 요청과 받고 처리에 대한 script
+      // 서버에선 요청에대해 보낼response 코딩
+      // 결과적으로 페이지이동없이 통신만하여 반응형웹을 만든다
+      // (요청에 딸려보낼 data의 type에 따라 형식이 조금씩 달라진다)
     </script>
   </body>
 </html>
